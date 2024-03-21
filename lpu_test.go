@@ -8,7 +8,8 @@ import (
 func Test_LPUCache_Basic(t *testing.T) {
 	we := NewGomegaWithT(t)
 
-	cache := NewLPUCache(2)
+	cache, err := NewLPUCache(2)
+	we.Expect(err).To(BeNil())
 
 	cache.Put(1, 1)
 	we.Expect(cache.nodeList.Len()).To(Equal(1))
