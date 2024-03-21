@@ -21,7 +21,7 @@ type LPUConfigCache struct {
 }
 
 const (
-	ConfigFile = "/etc/lpuCache_config.json"
+	ConfigFile = "./lpuCache_config.json"
 )
 
 // LoadLPUCache loads LPUCache from configuration file
@@ -40,7 +40,9 @@ func SaveLPUCache(lpu *LPUCache) {
 	}
 
 	configCache.Nodes = []*LPUConfigNode{}
-	for e := lpu.nodeList.Front(); e != nil; e.Next() {
+	i := 0
+	for e := lpu.nodeList.Front(); i < lpu.nodeList.Len(); e = e.Next() {
+		i++
 		nodeItem := e.Value.(nodeContent)
 		configNode := &LPUConfigNode{Key: nodeItem.key, Value: nodeItem.value, CreatedTime: nodeItem.createdTime}
 		configCache.Nodes = append(configCache.Nodes, configNode)
@@ -90,7 +92,9 @@ func convertConfigCache(configCache *LPUConfigCache) (*LPUCache, error) {
 }
 
 func findNodeByKey(key uint32, l *list.List) (*list.Element, error) {
-	for e := l.Front(); e != nil; e = e.Next() {
+	i := 0
+	for e := l.Front(); i < l.Len(); e = e.Next() {
+		i++
 		if e.Value.(nodeContent).key == key {
 			return e, nil
 		}
